@@ -67,33 +67,10 @@ The server will start on port 5500 (or the port can be specified in the `.env` f
 To get started, create the database and required tables by running the following SQL commands in your MySQL client:
 
 ```sql
--- Create the database
 CREATE DATABASE irctc;
 
--- Use the database
 USE irctc;
 
--- Create the users table
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user'
-);
-
--- Create the train table
-CREATE TABLE train (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    train_no INT NOT NULL,
-    train_name VARCHAR(200) NOT NULL,
-    source VARCHAR(200) NOT NULL,
-    destination VARCHAR(200) NOT NULL,
-    max_seats INT NOT NULL,
-    available_seats INT NOT NULL
-);
-
--- Create the bookings table
 CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     userId INT NOT NULL,
@@ -104,7 +81,24 @@ CREATE TABLE bookings (
     FOREIGN KEY (trainId) REFERENCES train(id)
 );
 
--- Verify tables
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') DEFAULT 'user'
+);
+
+CREATE TABLE train (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    train_no INT NOT NULL,
+    train_name VARCHAR(200) NOT NULL,
+    source VARCHAR(200) NOT NULL,
+    destination VARCHAR(200) NOT NULL,
+    max_seats INT NOT NULL,
+    available_seats INT NOT NULL
+);
+
 SELECT * FROM users;
 SELECT * FROM train;
 SELECT * FROM bookings;
@@ -117,7 +111,7 @@ SELECT * FROM bookings;
 - Admin operations like adding a train require an API Key to ensure only authorized users can perform such actions.
 - This project handles race conditions during seat booking using a transactional approach.
 
-## Things I wish to add later
+## More things I can add later
 
 - **Book Seats Across Intersecting Stations**: Currently, users can book seats only between a direct source and destination. I plan to enhance the system to allow bookings across intersecting stations. This will be particularly useful for travelers from Jammu and similar regions who need to book tickets through multiple intermediate stops. For example, a user traveling from Jammu to Delhi via multiple intersecting stations (e.g., Jammu -> Ludhiana -> Ambala -> Delhi) will be able to book seamlessly across different segments.
 
